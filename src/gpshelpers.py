@@ -2,13 +2,15 @@ from bs4 import BeautifulSoup
 import math
 import requests
 
-def coords_to_postal(lat,lon):
+
+def coords_to_postal(lat, lon):
     req = requests.get('https://nominatim.openstreetmap.org/reverse',
-            {'format' : 'jsonv2', 'lat' : str(lat), 'lon' : str(lon)})
+                       {'format': 'jsonv2', 'lat': str(lat), 'lon': str(lon)})
     if req.status_code != requests.codes.ok:
         raise Exception('failed to convert coordinates to postal codes')
 
     return req.json()['address']['postcode']
+
 
 def coords_distance(lat1, lon1, lat2, lon2):
     phi1 = math.radians(lat1)
@@ -23,17 +25,19 @@ def coords_distance(lat1, lon1, lat2, lon2):
     distance = 6371 * c
     return distance
 
+
 def extract_trackpoints(gpxfile):
     trackpoints = []
-    soup = BeautifulSoup(open(gpxfile).read(),'xml')
+    soup = BeautifulSoup(open(gpxfile).read(), 'xml')
     for trackpoint in soup.find_all('trkpt'):
-        point = { 'lat' : float(trackpoint.attrs['lat']),
-                  'lon' : float(trackpoint.attrs['lon']) }
+        point = {'lat': float(trackpoint.attrs['lat']),
+                 'lon': float(trackpoint.attrs['lon'])}
         trackpoints.append(point)
-    
+
     if len(trackpoints) == 0:
         raise ValueError('No trackpoints found in gpx file')
     return trackpoints
+
 
 def clean_trackpoints(trackpoints):
     new_trackpoints = [trackpoints[0]]

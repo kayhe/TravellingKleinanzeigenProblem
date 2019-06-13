@@ -1,4 +1,5 @@
 *.gpx
 *.pyo
 *.pyc
+*.html
 __pycache__/
