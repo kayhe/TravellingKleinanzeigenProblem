@@ -21,7 +21,7 @@ for point in trackpoints:
 
 output = OutputSoup()
 
-for postcode in postcodes:
+for postcode in sorted(postcodes):
     page = get_listings_page(args.keywords, postcode)
     items = extract_items(page)
     output.add_all_items(items, postcode)

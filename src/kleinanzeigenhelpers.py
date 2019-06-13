@@ -23,8 +23,10 @@ def extract_items(page):
         title = item.a.text
         url = 'https://www.ebay-kleinanzeigen.de' + item.a.attrs['href']
         price = item.strong.text
-        image = item.find_all(attrs={'class': 'imagebox srpimagebox'})[0]
-        image_url = image.attrs['data-imgsrc']
+        image = item.find(attrs={'class': 'imagebox srpimagebox'})
+        image_url = ''
+        if image:
+            image_url = image.attrs['data-imgsrc']
         items.append({'title': title, 'url': url,
                       'price': price, 'image': image_url})
 
